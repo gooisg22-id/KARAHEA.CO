@@ -20,8 +20,7 @@ sizeForm?.addEventListener('submit',e=>{
   {s:'S',waist:[68,76],hip:[94,102],h:[155,170],weight:[45,62]},
   {s:'M',waist:[76,84],hip:[102,110],h:[165,178],weight:[58,72]},
   {s:'L',waist:[84,92],hip:[110,118],h:[170,185],weight:[68,84]},
-  {s:'XL',waist:[92,100],hip:[118,126],h:[175,195],weight:[80,100]},
-  {s:'XXL',waist:[100,110],hip:[126,136],h:[180,205],weight:[96,125]}
+  {s:'XL',waist:[92,100],hip:[118,126],h:[175,195],weight:[80,100]}
  ];
  const mid=a=>(a[0]+a[1])/2;
  const score=sizes.map(x=>{
