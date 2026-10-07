@@ -10,15 +10,10 @@ menu?.addEventListener('click',()=>nav.classList.toggle('mobile-open'));
 const sizeForm=document.getElementById('sizeForm');
 sizeForm?.addEventListener('submit',e=>{
  e.preventDefault();
-
  const h=Number(document.getElementById('height').value);
  const w=Number(document.getElementById('weight').value);
  const waist=Number(document.getElementById('waist').value);
  const hip=Number(document.getElementById('hip').value);
- const fit=document.getElementById('fit').value;
-
- // Height + weight are enough to get a starting recommendation.
- // Waist + hip are optional and only improve the recommendation when entered.
  if(!h || !w)return;
 
  const sizes=[
@@ -28,47 +23,18 @@ sizeForm?.addEventListener('submit',e=>{
   {s:'XL',waist:[92,100],hip:[118,126],h:[175,195],weight:[80,100]},
   {s:'XXL',waist:[100,110],hip:[126,136],h:[180,205],weight:[96,125]}
  ];
-
  const mid=a=>(a[0]+a[1])/2;
-
- // Base score uses only height + weight, so the form works even when
- // the optional waist/hip fields are completely empty.
- let score=sizes.map(x=>{
+ const score=sizes.map(x=>{
    let d=Math.abs(h-mid(x.h))*0.65 + Math.abs(w-mid(x.weight))*1.35;
-   if(waist) d+=Math.abs(waist-mid(x.waist))*1.6;
-   if(hip) d+=Math.abs(hip-mid(x.hip))*1.0;
+   if(waist)d+=Math.abs(waist-mid(x.waist))*1.6;
+   if(hip)d+=Math.abs(hip-mid(x.hip));
    return {x,d};
  }).sort((a,b)=>a.d-b.d);
-
- let idx=sizes.findIndex(x=>x.s===score[0].x.s);
-
- // Baggy preference intentionally moves the recommendation up.
- if(fit==='baggy') idx=Math.min(idx+1,sizes.length-1);
- if(fit==='extreme') idx=Math.min(idx+2,sizes.length-1);
-
- const pick=sizes[idx];
+ const pick=score[0].x;
  const result=document.getElementById('sizeResult');
  const precision=waist||hip
    ? 'Based on your height, weight and optional measurements.'
-   : 'Based on height + weight. Add waist/hip only if you want a more precise result.';
-
- result.innerHTML='<span>YOUR KARAHEA SIZE</span><strong>'+pick.s+'</strong><p>'+pick.waist[0]+'–'+pick.waist[1]+' cm waist / '+pick.hip[0]+'–'+pick.hip[1]+' cm hip / '+fit.toUpperCase()+' FIT</p><small>'+precision+'</small>';
-
- if(fitModel){
-   fitModel.dataset.size=pick.s;
-   document.querySelectorAll('[data-fit-size]').forEach(x=>{
-     x.classList.toggle('active',x.dataset.fitSize===pick.s || (pick.s==='XXL'&&x.dataset.fitSize==='XL'));
-   });
- }
-
- if(fitCaption) fitCaption.textContent=pick.s+' / '+fit.toUpperCase()+' — recommended starting point';
+   : 'Based on height + weight. Waist and hip are optional.';
+ result.innerHTML='<span>YOUR KARAHEA SIZE</span><strong>'+pick.s+'</strong><p>'+pick.waist[0]+'–'+pick.waist[1]+' cm waist / '+pick.hip[0]+'–'+pick.hip[1]+' cm hip / BAGGY FIT</p><small>'+precision+'</small>';
  result.scrollIntoView({behavior:'smooth',block:'center'});
 });
-
-const fitModel=document.querySelector('.fit-model');
-const fitCaption=document.getElementById('fitCaption');
-document.querySelectorAll('[data-fit-size]').forEach(btn=>btn.addEventListener('click',()=>{
- document.querySelectorAll('[data-fit-size]').forEach(x=>x.classList.remove('active'));btn.classList.add('active');
- const s=btn.dataset.fitSize; fitModel.dataset.size=s;
- fitCaption.textContent=s+' / '+document.getElementById('fit').value.toUpperCase()+' — '+(s==='M'?'cleaner, less oversized':s==='L'?'balanced oversized silhouette':'maximum oversized volume');
-}));
