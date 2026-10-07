@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gooisg22-id.github.io/KARAHEA.ID/sitemap.xml
