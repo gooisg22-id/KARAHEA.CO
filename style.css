@@ -31,3 +31,6 @@
 /* Final UNIQLO-style S-XL Snowverb measurement layout */
 .garment-table .size-row{grid-template-columns:.55fr 1fr 1fr 1fr 1.15fr 1fr}
 @media(max-width:750px){.garment-table .size-row{min-width:650px;grid-template-columns:.55fr 1fr 1fr 1fr 1.15fr 1fr}}
+
+/* Language switcher */
+.language-switcher{display:flex;gap:2px;margin-left:18px}.lang-btn{background:transparent;color:#777;border:1px solid #333;padding:7px 8px;font:inherit;font-size:8px;letter-spacing:.08em;cursor:pointer}.lang-btn.active{color:#000;background:#fff;border-color:#fff}.lang-btn:hover{color:#fff;border-color:#777}@media(max-width:750px){.language-switcher{margin-left:auto;margin-right:8px}.lang-btn{padding:6px 7px}}
