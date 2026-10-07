@@ -38,3 +38,31 @@ sizeForm?.addEventListener('submit',e=>{
  result.innerHTML='<span>YOUR KARAHEA SIZE</span><strong>'+pick.s+'</strong><p>'+pick.waist[0]+'–'+pick.waist[1]+' cm waist / '+pick.hip[0]+'–'+pick.hip[1]+' cm hip / BAGGY FIT</p><small>'+precision+'</small>';
  result.scrollIntoView({behavior:'smooth',block:'center'});
 });
+/* KARAHEA size guide interactions */
+const guideTabs=document.querySelectorAll('[data-guide-tab]');
+const guidePanels=document.querySelectorAll('[data-guide-panel]');
+guideTabs.forEach(tab=>tab.addEventListener('click',()=>{
+  guideTabs.forEach(x=>x.classList.remove('active'));
+  guidePanels.forEach(x=>x.classList.remove('active'));
+  tab.classList.add('active');
+  document.querySelector('[data-guide-panel="'+tab.dataset.guideTab+'"]')?.classList.add('active');
+}));
+
+const unitButtons=document.querySelectorAll('[data-unit]');
+unitButtons.forEach(btn=>btn.addEventListener('click',()=>{
+  unitButtons.forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  const unit=btn.dataset.unit;
+  document.querySelectorAll('[data-cm]').forEach(cell=>{
+    cell.textContent=cell.dataset[unit];
+  });
+  document.querySelectorAll('.guide-title>span').forEach(x=>{
+    if(x.textContent.includes('ALL DIMENSIONS')) x.textContent=unit==='cm'?'ALL DIMENSIONS IN CM':'ALL DIMENSIONS IN INCH';
+  });
+}));
+
+document.querySelectorAll('[data-size-row]').forEach(row=>row.addEventListener('click',()=>{
+  document.querySelectorAll('[data-size-row]').forEach(x=>x.classList.remove('selected'));
+  row.classList.add('selected');
+}));
+
