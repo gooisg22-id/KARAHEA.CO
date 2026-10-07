@@ -33,3 +33,11 @@ sizeForm?.addEventListener('submit',e=>{
  result.innerHTML='<span>YOUR KARAHEA SIZE</span><strong>'+pick.s+'</strong><p>'+pick.waist[0]+'–'+pick.waist[1]+' cm waist / '+pick.hip[0]+'–'+pick.hip[1]+' cm hip / '+fit.toUpperCase()+' FIT</p>';
  result.scrollIntoView({behavior:'smooth',block:'center'});
 });
+
+const fitModel=document.querySelector('.fit-model');
+const fitCaption=document.getElementById('fitCaption');
+document.querySelectorAll('[data-fit-size]').forEach(btn=>btn.addEventListener('click',()=>{
+ document.querySelectorAll('[data-fit-size]').forEach(x=>x.classList.remove('active'));btn.classList.add('active');
+ const s=btn.dataset.fitSize; fitModel.dataset.size=s;
+ fitCaption.textContent=s+' / '+document.getElementById('fit').value.toUpperCase()+' — '+(s==='M'?'cleaner, less oversized':s==='L'?'balanced oversized silhouette':'maximum oversized volume');
+}));
